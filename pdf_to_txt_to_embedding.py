@@ -59,4 +59,4 @@ def txt_to_embedding():
 
 if __name__ == '__main__':
     # pdf_to_txt()
-    txt_to_embedding()
+    # txt_to_embedding()
