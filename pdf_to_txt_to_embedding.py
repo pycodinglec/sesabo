@@ -9,6 +9,7 @@ import dotenv
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import tiktoken
 import pickle
+import pandas as pd
 
 def pdf_to_txt():
     for pdffile in os.listdir('documents/now'):
@@ -27,14 +28,15 @@ def txt_to_embedding():
     EMBEDDING_MODEL = "text-embedding-ada-002"
     GPT_MODEL = "gpt-3.5-turbo"
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size = 300,
-        chunk_overlap  = 30,
+        chunk_size = 1000,
+        chunk_overlap  = 100,
         length_function = len,
         is_separator_regex = False,
     )
     enc = tiktoken.encoding_for_model(GPT_MODEL)
 
     for txtfile in os.listdir('documents_txt'):
+        df = pd.DataFrame(columns=['text', 'embedding'])
         count = 0
         with open('documents_txt/'+txtfile, 'r') as f:
             original = f.read()
@@ -43,20 +45,20 @@ def txt_to_embedding():
             count += len(enc.encode(fragment))
         print(f'Token count of {txtfile} is {count},\nso ${count/1000*0.0001} will be charged.')
         #input('Press enter to continue.')
-        embedding = []
         length_of_splitted_text = len(splitted_text)
         for i in range(length_of_splitted_text):
             response = openai.Embedding.create(
                 input = splitted_text[i],
-                model = "text-embedding-ada-002"
+                model = EMBEDDING_MODEL
             )
-            embedding += [response['data'][0]['embedding']]
+            df.loc[len(df)] = [splitted_text[i], response['data'][0]['embedding']]
             print(f'{i}/{length_of_splitted_text}') # for debug
-        with open('documents_embed/'+txtfile.rstrip('.txt')+'.embed.txt', 'w', encoding = 'utf-8') as f:
-            f.write(str(embedding))
+        df.to_csv('documents_embed/'+txtfile.rstrip('.txt')+'.embed.csv', index = False)
+        # with open('documents_embed/'+txtfile.rstrip('.txt')+'.embed.txt', 'w', encoding = 'utf-8') as f:
+        #     f.write(str(embedding))
         with open('documents_embed/'+txtfile.rstrip('.txt')+'.embed.pkl', 'wb') as f:
-            pickle.dump(embedding, f)
+            pickle.dump(df, f)
 
 if __name__ == '__main__':
     # pdf_to_txt()
-    # txt_to_embedding()
+    txt_to_embedding()
