@@ -60,7 +60,9 @@ def main():
     with st.sidebar:
         if st.button('대화 초기화'):
             st.session_state['msgs'] = initialize_conversation()
-        st.caption('현재 검색 가능한 문서(정확도 낮음: ')
+        st.write('아직 프로토타입이라 정확도가 낮지만, 개선될 예정입니다.')
+        st.write('현재 검색 가능한 문서:')
+        st.caption('교육계획서, 학교운영위원회 규정, 학업성적관리규정 등')
     st.title('세사보: 세화고등학교 사무 보조')    
     #openai.api_key = st.text_input('OpenAI API KEY:', type = 'password')
     openai.api_key = os.getenv('OPENAI_API_KEY') # for debug
