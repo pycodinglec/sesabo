@@ -24,7 +24,7 @@ def pdf_to_txt():
 
 def txt_to_embedding():
     dotenv.load_dotenv()
-    openai.api_key = os.getenv('OPENAI_API_KEY')
+    # openai.api_key = os.getenv('OPENAI_API_KEY')
     EMBEDDING_MODEL = "text-embedding-ada-002"
     GPT_MODEL = "gpt-3.5-turbo"
     text_splitter = RecursiveCharacterTextSplitter(
