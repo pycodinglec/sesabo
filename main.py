@@ -26,12 +26,12 @@ import openai
 import streamlit as st
 import os
 import pickle
-import dotenv
+#import dotenv
 import pandas as pd
 import numpy as np
 from scipy import spatial
 
-dotenv.load_dotenv()
+#dotenv.load_dotenv()
 GPT_MODEL = 'gpt-4'
 EMBEDDING_MODEL = 'text-embedding-ada-002'
 EMBEDDING_FOLDER = 'documents_embed_150_30'
@@ -101,7 +101,6 @@ def main():
         with st.chat_message("assistant"):
             message_placeholder = st.empty()
             full_response = ""
-            # modified_msgs = get_modified_msgs(st.session_state['msgs'], st.session_state['df'])
             modified_msgs = st.session_state['msgs'][:-1] + get_modified_prompt(st.session_state['msgs'][-1]['content'])
             responses = openai.ChatCompletion.create(
                 model = GPT_MODEL,
