@@ -26,13 +26,12 @@ import openai
 import streamlit as st
 import os
 import pickle
-#import dotenv
 import pandas as pd
 import numpy as np
 from scipy import spatial
-#dotenv.load_dotenv()
+
 openai.api_key = os.environ.get("OPENAI_API_KEY")
-GPT_MODEL = 'gpt-4'
+GPT_MODEL = 'gpt-3.5-turbo'
 EMBEDDING_MODEL = 'text-embedding-ada-002'
 EMBEDDING_FOLDER = 'documents_embed_150_30'
 
